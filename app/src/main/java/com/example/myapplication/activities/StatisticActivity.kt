@@ -1,8 +1,9 @@
-package com.example.myapplication
+package com.example.myapplication.activities
 
 import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import com.example.myapplication.R
 import kotlinx.android.synthetic.main.activity_chart.*
 
 class StatisticActivity : AppCompatActivity() {
