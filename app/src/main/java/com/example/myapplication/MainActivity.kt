@@ -102,11 +102,15 @@ class MainActivity : AppCompatActivity() {
                     if (!moodData.contains(item)) {
                         moodData.add(item)
                         moodAdapter.notifyDataSetChanged()
-                        parent.setSelection(0)
+                        Toast.makeText(
+                            this@MainActivity,
+                            "Настроение добавлено",
+                            Toast.LENGTH_LONG
+                        ).show()
                     } else {
                         Toast.makeText(this@MainActivity, "Такое настроение уже добавлено",Toast.LENGTH_LONG).show()
-                        parent.setSelection(0)
                     }
+                    parent.setSelection(0)
                 }
             }
         }
@@ -137,7 +141,6 @@ class MainActivity : AppCompatActivity() {
             }
             mStateLastClickTime = currTime
         }
-
 
         val stateSpinnerAdapter: ArrayAdapter<String> = object : ArrayAdapter<String>(
             this,
@@ -188,108 +191,195 @@ class MainActivity : AppCompatActivity() {
                     if (!stateData.contains(item)) {
                         stateData.add(item)
                         stateAdapter.notifyDataSetChanged()
-                        parent.setSelection(0)
+                        Toast.makeText(
+                            this@MainActivity,
+                            "Самочувствие добавлено",
+                            Toast.LENGTH_LONG
+                        ).show()
                     } else {
                         Toast.makeText(this@MainActivity, "Такое самочувствие уже добавлено",Toast.LENGTH_LONG).show()
-                        parent.setSelection(0)
                     }
+                    parent.setSelection(0)
                 }
             }
         }
 
+        val doingData = mutableListOf<String>()
+        val doingAdapter = ArrayAdapter<String>(this, android.R.layout.simple_list_item_1, doingData)
+        var mDoingLastClickTime = 0L
+        doinglistview.adapter = doingAdapter
+        doinglistview.setOnItemClickListener { _, _, position, _ ->
+            val currTime = System.currentTimeMillis()
+            if (mDoingLastClickTime != 0L) {
+                if (currTime - mDoingLastClickTime < ViewConfiguration.getDoubleTapTimeout()) {
+                    stateData.removeAt(position)
+                    stateAdapter.notifyDataSetChanged()
+                }
+            }
+            mDoingLastClickTime = currTime
+        }
 
-
+        var time: String? = null
+        var doing: String? = null
         // timespinner creation
         val times = arrayOf(
                 "Время", "7:00", "8:00", "9:00", "10:00", "11:00", "12:00", "13:00", "14:00", "15:00",
                 "16:00", "17:00", "18:00", "19:00", "20:00", "21:00","22:00", "23:00", "00:00", "1:00", "2:00",
                 "3:00", "4:00", "5:00", "6:00"
         )
-        val timeadapter: ArrayAdapter<String> = object : ArrayAdapter<String>(
-                this,
-                android.R.layout.simple_spinner_dropdown_item,
-                times
+
+        val timeSpinnerAdapter: ArrayAdapter<String> = object : ArrayAdapter<String>(
+            this,
+            android.R.layout.simple_spinner_dropdown_item, times
         ){
             override fun getDropDownView(
-                    position: Int,
-                    convertView: View?,
-                    parent: ViewGroup
+                position: Int,
+                convertView: View?,
+                parent: ViewGroup
             ): View {
-                val view: TextView = super.getDropDownView(
-                        position,
-                        convertView,
-                        parent
-                ) as TextView
+                val view = super.getDropDownView(position, convertView, parent)
+                val tv = view as TextView
+                if (position == 0) {
+                    // Set the hint text color gray
+                    tv.setTextColor(Color.GRAY)
+                } else {
+                    tv.setTextColor(Color.BLACK)
+                }
                 return view
             }
 
             override fun isEnabled(position: Int): Boolean {
-                // disable first item
-                // first item is display as hint
                 return position != 0
             }
-        }//ITS JUST TO MAKE A GODDAMN HINT
 
-        timespinner.adapter = timeadapter
-        timespinner.onItemSelectedListener =
-                object : AdapterView.OnItemSelectedListener {
-                    override fun onNothingSelected(parent: AdapterView<*>?) {
-                    }
+            override fun getView(position: Int, convertView: View?, parent: ViewGroup): View {
+                val view = super.getView(position, convertView, parent)
+                val tv =
+                    view.findViewById<View>(android.R.id.text1) as TextView
+                tv.setTextColor(Color.GRAY)
+                return view
+            }
+        }
 
-                    override fun onItemSelected(
-                            parent: AdapterView<*>?,
-                            view: View?,
-                            position: Int,
-                            id: Long
-                    ) {
-                        Toast.makeText(this@MainActivity, times[position], Toast.LENGTH_LONG).show()
+        timespinner.adapter = timeSpinnerAdapter
+        timespinner.onItemSelectedListener = object : AdapterView.OnItemSelectedListener {
+            override fun onNothingSelected(parent: AdapterView<*>?) {
+            }
+
+            override fun onItemSelected(
+                parent: AdapterView<*>?,
+                view: View?,
+                position: Int,
+                id: Long
+            ) {
+                if (position != 0) {
+                    val item = parent!!.getItemAtPosition(position).toString()
+                    if (doing != null) {
+                        val text = "$item $doing"
+                        if (!doingData.contains(text)) {
+                            doingData.add(text)
+                            doingAdapter.notifyDataSetChanged()
+                            Toast.makeText(
+                                this@MainActivity,
+                                "Занятие добавлено",
+                                Toast.LENGTH_LONG
+                            ).show()
+                        } else {
+                            Toast.makeText(
+                                this@MainActivity,
+                                "Такое действие уже добавлено",
+                                Toast.LENGTH_LONG
+                            ).show()
+                        }
+                        parent.setSelection(0)
+                        doingspinner.setSelection(0)
+                        time = null
+                        doing = null
+                    } else {
+                        time = item
                     }
                 }
-        // doings creation
+            }
+        }
+
         val doings = arrayOf(
-                "Добавьте занятие", "Работа", "Учеба", "Завтрак", "Второй завтрак", "Обед", "Ужин", "Сон",
-                "Разглядывание стены"
-        )
-        val doingadapter: ArrayAdapter<String> = object : ArrayAdapter<String>(
-                this,
-                android.R.layout.simple_spinner_dropdown_item,
-                doings
+                "Занятие", "Работа", "Учеба", "Завтрак", "Второй завтрак", "Обед", "Ужин", "Сон",
+                "Разглядывание стены")
+
+        val doingSpinnerAdapter: ArrayAdapter<String> = object : ArrayAdapter<String>(
+            this,
+            android.R.layout.simple_spinner_dropdown_item, doings
         ){
             override fun getDropDownView(
-                    position: Int,
-                    convertView: View?,
-                    parent: ViewGroup
+                position: Int,
+                convertView: View?,
+                parent: ViewGroup
             ): View {
-                val view: TextView = super.getDropDownView(
-                        position,
-                        convertView,
-                        parent
-                ) as TextView
+                val view = super.getDropDownView(position, convertView, parent)
+                val tv = view as TextView
+                if (position == 0) {
+                    // Set the hint text color gray
+                    tv.setTextColor(Color.GRAY)
+                } else {
+                    tv.setTextColor(Color.BLACK)
+                }
                 return view
             }
 
             override fun isEnabled(position: Int): Boolean {
-                // disable first item
-                // first item is display as hint
                 return position != 0
             }
-        }//ITS JUST TO MAKE A GODDAMN HINT
 
-        doingspinner.adapter = doingadapter
-        doingspinner.onItemSelectedListener =
-                object : AdapterView.OnItemSelectedListener {
-                    override fun onNothingSelected(parent: AdapterView<*>?) {
-                    }
+            override fun getView(position: Int, convertView: View?, parent: ViewGroup): View {
+                val view = super.getView(position, convertView, parent)
+                val tv =
+                    view.findViewById<View>(android.R.id.text1) as TextView
+                tv.setTextColor(Color.GRAY)
+                return view
+            }
+        }
 
-                    override fun onItemSelected(
-                            parent: AdapterView<*>?,
-                            view: View?,
-                            position: Int,
-                            id: Long
-                    ) {
-                        Toast.makeText(this@MainActivity, doings[position], Toast.LENGTH_LONG).show()
+        doingspinner.adapter = doingSpinnerAdapter
+        doingspinner.onItemSelectedListener = object : AdapterView.OnItemSelectedListener {
+            override fun onNothingSelected(parent: AdapterView<*>?) {
+            }
+
+            override fun onItemSelected(
+                parent: AdapterView<*>?,
+                view: View?,
+                position: Int,
+                id: Long
+            ) {
+                if (position != 0) {
+                    val item = parent!!.getItemAtPosition(position).toString()
+                    if (time != null) {
+                        val text = "$time $item"
+                        if (!doingData.contains(text)) {
+                            doingData.add(text)
+                            doingAdapter.notifyDataSetChanged()
+                            Toast.makeText(
+                                this@MainActivity,
+                                "Занятие добавлено",
+                                Toast.LENGTH_LONG
+                            ).show()
+                        } else {
+                            Toast.makeText(
+                                this@MainActivity,
+                                "Такое действие уже добавлено",
+                                Toast.LENGTH_LONG
+                            ).show()
+                        }
+                        parent.setSelection(0)
+                        timespinner.setSelection(0)
+                        time = null
+                        doing = null
+                    } else {
+                        doing = item
                     }
                 }
+            }
+        }
+
         // go to calendar
         btn_calendar.setOnClickListener {
             val myintent = Intent(this, CalendarActivity::class.java)
