@@ -1,5 +1,6 @@
 package com.example.myapplication.activities
 
+import android.content.Context
 import android.content.Intent
 import android.database.sqlite.SQLiteDatabase
 import android.graphics.Color
@@ -8,6 +9,7 @@ import android.view.KeyEvent
 import android.view.View
 import android.view.ViewConfiguration
 import android.view.ViewGroup
+import android.view.inputmethod.InputMethodManager
 import android.widget.AdapterView
 import android.widget.ArrayAdapter
 import android.widget.TextView
@@ -151,6 +153,12 @@ class MainActivity : AppCompatActivity() {
                     } else {
                         Toast.makeText(this@MainActivity, "Такое настроение уже добавлено",Toast.LENGTH_LONG).show()
                     }
+
+                    val imm = getSystemService(Context.INPUT_METHOD_SERVICE) as? InputMethodManager
+                    if (v != null) {
+                        imm?.hideSoftInputFromWindow(v.windowToken, 0)
+                    }
+
                     moodedit.visibility = View.GONE
                     moodspinner.visibility = View.VISIBLE
                     moodedit.text.clear()
@@ -278,6 +286,10 @@ class MainActivity : AppCompatActivity() {
                         ).show()
                     } else {
                         Toast.makeText(this@MainActivity, "Такое самочувствие уже добавлено",Toast.LENGTH_LONG).show()
+                    }
+                    val imm = getSystemService(Context.INPUT_METHOD_SERVICE) as? InputMethodManager
+                    if (v != null) {
+                        imm?.hideSoftInputFromWindow(v.windowToken, 0)
                     }
                     stateedit.visibility = View.GONE
                     statespinner.visibility = View.VISIBLE
@@ -436,6 +448,10 @@ class MainActivity : AppCompatActivity() {
                         time = item
                         timeedit.isEnabled = false
                     }
+                    val imm = getSystemService(Context.INPUT_METHOD_SERVICE) as? InputMethodManager
+                    if (v != null) {
+                        imm?.hideSoftInputFromWindow(v.windowToken, 0)
+                    }
                     return true
                 }
                 return false
@@ -565,6 +581,10 @@ class MainActivity : AppCompatActivity() {
                     } else {
                         doing = item
                         doingedit.isEnabled = false
+                    }
+                    val imm = getSystemService(Context.INPUT_METHOD_SERVICE) as? InputMethodManager
+                    if (v != null) {
+                        imm?.hideSoftInputFromWindow(v.windowToken, 0)
                     }
                     return true
                 }
