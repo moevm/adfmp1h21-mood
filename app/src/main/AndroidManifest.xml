@@ -9,10 +9,10 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/Theme.MyApplication">
-        <activity android:name=".CalendarActivity"></activity>
-        <activity android:name=".StatisticActivity" />
-        <activity android:name=".ChartActivity" />
-        <activity android:name=".MainActivity">
+        <activity android:name=".activities.CalendarActivity"></activity>
+        <activity android:name=".activities.StatisticActivity" />
+        <activity android:name=".activities.ChartActivity" />
+        <activity android:name=".activities.MainActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 

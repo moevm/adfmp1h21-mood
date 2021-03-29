@@ -1,12 +1,10 @@
-package com.example.myapplication
+package com.example.myapplication.activities
 
 import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
-import android.widget.ArrayAdapter
 import android.widget.CalendarView;
-import android.widget.CalendarView.OnDateChangeListener;
-import android.widget.TextView
+import com.example.myapplication.R
 import kotlinx.android.synthetic.main.activity_calendar.*
 import kotlinx.android.synthetic.main.activity_calendar.btn_chart
 
