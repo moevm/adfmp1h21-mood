@@ -3,7 +3,6 @@ build
 captures
 .idea
 
-gradlew.bat
 *.iml
 .DS_Store
 .externalNativeBuild
