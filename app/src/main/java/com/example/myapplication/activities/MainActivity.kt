@@ -1,6 +1,8 @@
 package com.example.myapplication.activities
 
+import android.app.AlertDialog
 import android.content.Context
+import android.content.DialogInterface
 import android.content.Intent
 import android.database.sqlite.SQLiteDatabase
 import android.graphics.Color
@@ -58,10 +60,26 @@ class MainActivity : AppCompatActivity() {
             val currTime = System.currentTimeMillis()
             if (mLastClickTime != 0L) {
                 if (currTime - mLastClickTime < ViewConfiguration.getDoubleTapTimeout()) {
-                    val item = moodData[position]
-                    dbRepository.deleteMood(dateText, item)
-                    moodData.removeAt(position)
-                    moodAdapter.notifyDataSetChanged()
+                    val dialogMoodClickListener =
+                        DialogInterface.OnClickListener {dialog, which ->
+                            when (which) {
+                                DialogInterface.BUTTON_POSITIVE -> {
+                                    val item = moodData[position]
+                                    dbRepository.deleteMood(dateText, item)
+                                    moodData.removeAt(position)
+                                    moodAdapter.notifyDataSetChanged()
+
+                                }
+                                DialogInterface.BUTTON_NEGATIVE -> {
+
+                                }
+                            }
+                        }
+
+                    val moodBuilder: AlertDialog.Builder = AlertDialog.Builder(this@MainActivity)
+                    moodBuilder.setMessage("Удалить запись?")
+                        .setPositiveButton("Да", dialogMoodClickListener)
+                        .setNegativeButton("Нет", dialogMoodClickListener).show()
                 }
             }
             mLastClickTime = currTime
@@ -192,10 +210,26 @@ class MainActivity : AppCompatActivity() {
             val currTime = System.currentTimeMillis()
             if (mStateLastClickTime != 0L) {
                 if (currTime - mStateLastClickTime < ViewConfiguration.getDoubleTapTimeout()) {
-                    val item = stateData[position]
-                    dbRepository.deleteState(dateText, item)
-                    stateData.removeAt(position)
-                    stateAdapter.notifyDataSetChanged()
+                    val dialogStateClickListener =
+                        DialogInterface.OnClickListener {dialog, which ->
+                            when (which) {
+                                DialogInterface.BUTTON_POSITIVE -> {
+                                    val item = stateData[position]
+                                    dbRepository.deleteState(dateText, item)
+                                    stateData.removeAt(position)
+                                    stateAdapter.notifyDataSetChanged()
+
+                                }
+                                DialogInterface.BUTTON_NEGATIVE -> {
+
+                                }
+                            }
+                        }
+
+                    val stateBuilder: AlertDialog.Builder = AlertDialog.Builder(this@MainActivity)
+                    stateBuilder.setMessage("Удалить запись?")
+                        .setPositiveButton("Да", dialogStateClickListener)
+                        .setNegativeButton("Нет", dialogStateClickListener).show()
                 }
             }
             mStateLastClickTime = currTime
@@ -311,10 +345,26 @@ class MainActivity : AppCompatActivity() {
             val currTime = System.currentTimeMillis()
             if (mDoingLastClickTime != 0L) {
                 if (currTime - mDoingLastClickTime < ViewConfiguration.getDoubleTapTimeout()) {
-                    val item = doingData[position].split(". ")
-                    dbRepository.deleteDoing(dateText, item[0], item[1])
-                    doingData.removeAt(position)
-                    doingAdapter.notifyDataSetChanged()
+                    val dialogDoingClickListener =
+                        DialogInterface.OnClickListener {dialog, which ->
+                            when (which) {
+                                DialogInterface.BUTTON_POSITIVE -> {
+                                    val item = doingData[position].split(". ")
+                                    dbRepository.deleteDoing(dateText, item[0], item[1])
+                                    doingData.removeAt(position)
+                                    doingAdapter.notifyDataSetChanged()
+
+                                }
+                                DialogInterface.BUTTON_NEGATIVE -> {
+
+                                }
+                            }
+                        }
+
+                    val doingBuilder: AlertDialog.Builder = AlertDialog.Builder(this@MainActivity)
+                    doingBuilder.setMessage("Удалить запись?")
+                        .setPositiveButton("Да", dialogDoingClickListener)
+                        .setNegativeButton("Нет", dialogDoingClickListener).show()
                 }
             }
             mDoingLastClickTime = currTime
@@ -324,9 +374,7 @@ class MainActivity : AppCompatActivity() {
         var doing: String? = null
         // timespinner creation
         val times = arrayOf(
-                "Время", "7:00", "8:00", "9:00", "10:00", "11:00", "12:00", "13:00", "14:00", "15:00",
-                "16:00", "17:00", "18:00", "19:00", "20:00", "21:00","22:00", "23:00", "00:00", "1:00", "2:00",
-                "3:00", "4:00", "5:00", "6:00", "Свой вариант..."
+                "Время", "Утро", "День", "Вечер", "Ночь", "Свой вариант..."
         )
 
         val timeSpinnerAdapter: ArrayAdapter<String> = object : ArrayAdapter<String>(
