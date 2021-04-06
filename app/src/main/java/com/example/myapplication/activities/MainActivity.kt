@@ -21,6 +21,7 @@ import com.example.myapplication.R
 import com.example.myapplication.db.DBHelper
 import com.example.myapplication.db.DBRepository
 import kotlinx.android.synthetic.main.activity_main.*
+import java.time.LocalDate
 import java.time.LocalDateTime
 import java.time.format.DateTimeFormatter
 import java.time.format.FormatStyle
@@ -34,9 +35,29 @@ class MainActivity : AppCompatActivity() {
         val db: SQLiteDatabase = dbHelper.writableDatabase
         val dbRepository = DBRepository(db)
 
-        val currentDateTime = LocalDateTime.now()
+        val arguments = intent.extras
+        val currentDateTime:LocalDate
+
+        if (arguments != null) {
+            val dateTime = arguments["currentDateTime"].toString()
+            currentDateTime = LocalDate.parse(dateTime)
+            moodspinner.visibility = View.GONE
+            statespinner.visibility = View.GONE
+            timespinner.visibility = View.GONE
+            doingspinner.visibility = View.GONE
+        } else {
+            currentDateTime = LocalDateTime.now().toLocalDate()
+        }
         val dateText = currentDateTime.format(DateTimeFormatter.ofLocalizedDate(FormatStyle.LONG))
+        val currentDateTimeString = currentDateTime.toString()
+
         maintext.text = dateText
+
+        Toast.makeText(
+            this@MainActivity,
+            currentDateTimeString,
+            Toast.LENGTH_LONG
+        ).show()
 
         val moods = arrayOf(
                 "Сейчас мое настроение...",
@@ -52,7 +73,7 @@ class MainActivity : AppCompatActivity() {
                 "Свой вариант..."
         )
 
-        val moodData = dbRepository.getMoodByDate(dateText)
+        val moodData = dbRepository.getMoodByDate(currentDateTimeString)
         val moodAdapter = ArrayAdapter<String>(this, android.R.layout.simple_list_item_1, moodData)
         var mLastClickTime = 0L
         moodlistview.adapter = moodAdapter
@@ -61,11 +82,11 @@ class MainActivity : AppCompatActivity() {
             if (mLastClickTime != 0L) {
                 if (currTime - mLastClickTime < ViewConfiguration.getDoubleTapTimeout()) {
                     val dialogMoodClickListener =
-                        DialogInterface.OnClickListener {dialog, which ->
+                        DialogInterface.OnClickListener {_, which ->
                             when (which) {
                                 DialogInterface.BUTTON_POSITIVE -> {
                                     val item = moodData[position]
-                                    dbRepository.deleteMood(dateText, item)
+                                    dbRepository.deleteMood(currentDateTimeString, item)
                                     moodData.removeAt(position)
                                     moodAdapter.notifyDataSetChanged()
 
@@ -139,7 +160,7 @@ class MainActivity : AppCompatActivity() {
                     if (!moodData.contains(item)) {
                         moodData.add(item)
                         moodAdapter.notifyDataSetChanged()
-                        dbRepository.setMood(dateText, item)
+                        dbRepository.setMood(currentDateTimeString, item)
                         Toast.makeText(
                             this@MainActivity,
                             "Настроение добавлено",
@@ -162,7 +183,7 @@ class MainActivity : AppCompatActivity() {
                     if (!moodData.contains(item)) {
                         moodData.add(item)
                         moodAdapter.notifyDataSetChanged()
-                        dbRepository.setMood(dateText, item)
+                        dbRepository.setMood(currentDateTimeString, item)
                         Toast.makeText(
                             this@MainActivity,
                             "Настроение добавлено",
@@ -202,7 +223,7 @@ class MainActivity : AppCompatActivity() {
                 "Свой вариант..."
         )
 
-        val stateData = dbRepository.getStateByDate(dateText)
+        val stateData = dbRepository.getStateByDate(currentDateTimeString)
         val stateAdapter = ArrayAdapter<String>(this, android.R.layout.simple_list_item_1, stateData)
         var mStateLastClickTime = 0L
         statelistview.adapter = stateAdapter
@@ -211,11 +232,11 @@ class MainActivity : AppCompatActivity() {
             if (mStateLastClickTime != 0L) {
                 if (currTime - mStateLastClickTime < ViewConfiguration.getDoubleTapTimeout()) {
                     val dialogStateClickListener =
-                        DialogInterface.OnClickListener {dialog, which ->
+                        DialogInterface.OnClickListener {_, which ->
                             when (which) {
                                 DialogInterface.BUTTON_POSITIVE -> {
                                     val item = stateData[position]
-                                    dbRepository.deleteState(dateText, item)
+                                    dbRepository.deleteState(currentDateTimeString, item)
                                     stateData.removeAt(position)
                                     stateAdapter.notifyDataSetChanged()
 
@@ -289,7 +310,7 @@ class MainActivity : AppCompatActivity() {
                     if (!stateData.contains(item)) {
                         stateData.add(item)
                         stateAdapter.notifyDataSetChanged()
-                        dbRepository.setState(dateText, item)
+                        dbRepository.setState(currentDateTimeString, item)
                         Toast.makeText(
                             this@MainActivity,
                             "Самочувствие добавлено",
@@ -312,7 +333,7 @@ class MainActivity : AppCompatActivity() {
                     if (!stateData.contains(item)) {
                         stateData.add(item)
                         stateAdapter.notifyDataSetChanged()
-                        dbRepository.setState(dateText, item)
+                        dbRepository.setState(currentDateTimeString, item)
                         Toast.makeText(
                             this@MainActivity,
                             "Самочувствие добавлено",
@@ -337,7 +358,7 @@ class MainActivity : AppCompatActivity() {
         stateedit.setHintTextColor(Color.GRAY)
 
 
-        val doingData = dbRepository.getDoingByDate(dateText)
+        val doingData = dbRepository.getDoingByDate(currentDateTimeString)
         val doingAdapter = ArrayAdapter<String>(this, android.R.layout.simple_list_item_1, doingData)
         var mDoingLastClickTime = 0L
         doinglistview.adapter = doingAdapter
@@ -346,11 +367,11 @@ class MainActivity : AppCompatActivity() {
             if (mDoingLastClickTime != 0L) {
                 if (currTime - mDoingLastClickTime < ViewConfiguration.getDoubleTapTimeout()) {
                     val dialogDoingClickListener =
-                        DialogInterface.OnClickListener {dialog, which ->
+                        DialogInterface.OnClickListener {_, which ->
                             when (which) {
                                 DialogInterface.BUTTON_POSITIVE -> {
                                     val item = doingData[position].split(". ")
-                                    dbRepository.deleteDoing(dateText, item[0], item[1])
+                                    dbRepository.deleteDoing(currentDateTimeString, item[0], item[1])
                                     doingData.removeAt(position)
                                     doingAdapter.notifyDataSetChanged()
 
@@ -434,7 +455,7 @@ class MainActivity : AppCompatActivity() {
                         if (!doingData.contains(text)) {
                             doingData.add(text)
                             doingAdapter.notifyDataSetChanged()
-                            dbRepository.setDoing(dateText, item, doing.orEmpty())
+                            dbRepository.setDoing(currentDateTimeString, item, doing.orEmpty())
                             Toast.makeText(
                                 this@MainActivity,
                                 "Занятие добавлено",
@@ -469,7 +490,7 @@ class MainActivity : AppCompatActivity() {
                         if (!doingData.contains(text)) {
                             doingData.add(text)
                             doingAdapter.notifyDataSetChanged()
-                            dbRepository.setDoing(dateText, item, doing.orEmpty())
+                            dbRepository.setDoing(currentDateTimeString, item, doing.orEmpty())
                             Toast.makeText(
                                 this@MainActivity,
                                 "Занятие добавлено",
@@ -568,7 +589,7 @@ class MainActivity : AppCompatActivity() {
                         if (!doingData.contains(text)) {
                             doingData.add(text)
                             doingAdapter.notifyDataSetChanged()
-                            dbRepository.setDoing(dateText, time.orEmpty(), item)
+                            dbRepository.setDoing(currentDateTimeString, time.orEmpty(), item)
                             Toast.makeText(
                                 this@MainActivity,
                                 "Занятие добавлено",
@@ -603,7 +624,7 @@ class MainActivity : AppCompatActivity() {
                         if (!doingData.contains(text)) {
                             doingData.add(text)
                             doingAdapter.notifyDataSetChanged()
-                            dbRepository.setDoing(dateText, time.orEmpty(), item)
+                            dbRepository.setDoing(currentDateTimeString, time.orEmpty(), item)
                             Toast.makeText(
                                 this@MainActivity,
                                 "Занятие добавлено",
