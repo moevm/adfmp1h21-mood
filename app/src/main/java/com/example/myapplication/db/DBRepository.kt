@@ -219,19 +219,22 @@ class DBRepository(val db: SQLiteDatabase){
             null,                   // don't filter by row groups
             sortOrder               // The sort order
         )
-
         val items = mutableMapOf<String, Int>()
+        var date = startDate
+
+        while (date.isBefore(endDate.plusDays(1))) {
+            items[date.toString()] = 0
+            date = date.plusDays(1)
+        }
+
         with(cursor) {
             while (moveToNext()) {
                 val localDate = LocalDate.parse(getString(getColumnIndex("DATE")))
                 if (localDate.isBefore(endDate.plusDays(1)) &&
-                    localDate.isAfter(startDate.minusDays(1)))
-                    if (items.containsKey(localDate.toString())) {
-                        val count = items[localDate.toString()]!!.plus(1)
-                        items[localDate.toString()] = count
-                    } else {
-                        items[localDate.toString()] = 0
-                    }
+                    localDate.isAfter(startDate.minusDays(1))) {
+                    val count = items[localDate.toString()]!!.plus(1)
+                    items[localDate.toString()] = count
+                }
             }
         }
 
@@ -252,13 +255,10 @@ class DBRepository(val db: SQLiteDatabase){
             while (moveToNext()) {
                 val localDate = LocalDate.parse(getString(getColumnIndex("DATE")))
                 if (localDate.isBefore(endDate.plusDays(1)) &&
-                    localDate.isAfter(startDate.minusDays(1)))
-                    if (items.containsKey(localDate.toString())) {
-                        val count = items[localDate.toString()]!!.plus(1)
-                        items[localDate.toString()] = count
-                    } else {
-                        items[localDate.toString()] = 0
-                    }
+                    localDate.isAfter(startDate.minusDays(1))) {
+                    val count = items[localDate.toString()]!!.plus(1)
+                    items[localDate.toString()] = count
+                }
             }
         }
 
@@ -279,13 +279,10 @@ class DBRepository(val db: SQLiteDatabase){
             while (moveToNext()) {
                 val localDate = LocalDate.parse(getString(getColumnIndex("DATE")))
                 if (localDate.isBefore(endDate.plusDays(1)) &&
-                    localDate.isAfter(startDate.minusDays(1)))
-                    if (items.containsKey(localDate.toString())) {
-                        val count = items[localDate.toString()]!!.plus(1)
-                        items[localDate.toString()] = count
-                    } else {
-                        items[localDate.toString()] = 0
-                    }
+                    localDate.isAfter(startDate.minusDays(1))) {
+                    val count = items[localDate.toString()]!!.plus(1)
+                    items[localDate.toString()] = count
+                }
             }
         }
         return items
