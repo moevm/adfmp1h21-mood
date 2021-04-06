@@ -208,7 +208,7 @@ class DBRepository(val db: SQLiteDatabase){
 
     fun getActivitiesByDays(startDate: LocalDate, endDate: LocalDate): Map<String, Int>{
         val projection = arrayOf("DATE", "MOOD")
-        val sortOrder = "DATE DESC"
+        val sortOrder = "DATE ASC"
 
         val cursor = db.query(
             "MOODS",   // The table to query
@@ -236,7 +236,7 @@ class DBRepository(val db: SQLiteDatabase){
         }
 
         val projectionState = arrayOf("DATE", "STATE")
-        val sortOrderState = "DATE DESC"
+        val sortOrderState = "DATE ASC"
 
         val cursorState = db.query(
             "STATES",   // The table to query
@@ -263,7 +263,7 @@ class DBRepository(val db: SQLiteDatabase){
         }
 
         val projectionDoing = arrayOf("DATE", "DOING")
-        val sortOrderDoing = "DATE DESC"
+        val sortOrderDoing = "DATE ASC"
 
         val cursorDoing = db.query(
             "DOINGS",   // The table to query
@@ -288,7 +288,7 @@ class DBRepository(val db: SQLiteDatabase){
                     }
             }
         }
-        return items.toList().sortedBy { (_, value) -> value}.toMap()
+        return items
     }
 
     fun cleanBD(){

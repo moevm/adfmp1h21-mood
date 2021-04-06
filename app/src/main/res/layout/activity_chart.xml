@@ -54,11 +54,11 @@
                 android:layout_columnSpan="5"
                 android:id="@+id/periodspinner"/>
 <!--            place for statistic chart-->
-            <ImageView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:src="@drawable/grafic_zaglushka"
-                />
+            <com.jjoe64.graphview.GraphView
+                android:layout_width="match_parent"
+                android:layout_height="200dip"
+                android:layout_margin="5dp"
+                android:id="@+id/graph" />
             <!--            place for statistic chart-->
             <TextView
                 android:layout_width="wrap_content"
@@ -147,7 +147,6 @@
                 android:layout_height="wrap_content"
                 android:layout_margin="5dp"
                 android:text=" "
-                android:textStyle="bold"
                 android:textColor="#000000"
                 android:textSize="15sp"
                 android:gravity="left"/>
