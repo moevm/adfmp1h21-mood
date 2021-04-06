@@ -22,7 +22,7 @@ class CalendarActivity : AppCompatActivity() {
             val myintent = Intent(this, ChartActivity::class.java)
             startActivity(myintent)
         }
-
+        calendar_view.setMaxDate(System.currentTimeMillis())
         calendar_view.setOnDateChangeListener(object : CalendarView.OnDateChangeListener {
             override fun onSelectedDayChange(p0: CalendarView, p1: Int, p2: Int, p3: Int) {
                 val myintent = Intent(this@CalendarActivity, MainActivity::class.java)
