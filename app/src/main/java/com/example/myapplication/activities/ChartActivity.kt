@@ -103,7 +103,7 @@ class ChartActivity : AppCompatActivity() {
                 graph.gridLabelRenderer.horizontalAxisTitle = "Дата"
                 graph.gridLabelRenderer.verticalAxisTitle = "Количество записей"
                 graph.gridLabelRenderer.textSize = 35F
-                graph.gridLabelRenderer.numHorizontalLabels = map.keys.size
+                graph.gridLabelRenderer.numHorizontalLabels = 3
                 graph.gridLabelRenderer.setHorizontalLabelsAngle(45)
                 graph.gridLabelRenderer.numVerticalLabels = map.maxBy { it.value }!!.value
 
