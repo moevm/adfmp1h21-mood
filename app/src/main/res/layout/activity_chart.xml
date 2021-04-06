@@ -66,6 +66,16 @@
                 android:layout_margin="5dp"
                 android:text="Самый активный день "
                 android:textColor="#000000"
+                android:textStyle="bold"
+                android:textSize="15sp"
+                android:gravity="left"/>
+            <TextView
+                android:id="@+id/mostactivedaytext"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_margin="5dp"
+                android:text=" "
+                android:textColor="#000000"
                 android:textSize="15sp"
                 android:gravity="left"/>
             <TextView
@@ -73,30 +83,74 @@
                 android:layout_height="wrap_content"
                 android:layout_margin="5dp"
                 android:text="Наименее активный день "
+                android:textStyle="bold"
                 android:textColor="#000000"
                 android:textSize="15sp"
-                android:gravity="left" />
+                android:gravity="left"/>
+            <TextView
+                android:id="@+id/mostnotactivedaytext"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_margin="5dp"
+                android:text=" "
+                android:textColor="#000000"
+                android:textSize="15sp"
+                android:gravity="left"/>
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_margin="5dp"
-                android:text="Список всех записей за"
+                android:text="Самое частое настроение "
+                android:textStyle="bold"
                 android:textColor="#000000"
                 android:textSize="15sp"
-                android:textStyle="bold"/>
-            <Spinner
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:layout_margin="5dp"
-                android:layout_columnSpan="5"
-                android:id="@+id/periodspinner2"/>
-            <Button
+                android:gravity="left"/>
+            <TextView
+                android:id="@+id/moodtext"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:id = "@+id/btn_form"
-                android:gravity="center"
                 android:layout_margin="5dp"
-                android:text = "Сформировать"/>
+                android:text=" "
+                android:textColor="#000000"
+                android:textSize="15sp"
+                android:gravity="left"/>
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_margin="5dp"
+                android:text="Самое частое самочувствие "
+                android:textStyle="bold"
+                android:textColor="#000000"
+                android:textSize="15sp"
+                android:gravity="left"/>
+            <TextView
+                android:id="@+id/statetext"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_margin="5dp"
+                android:text=" "
+                android:textColor="#000000"
+                android:textSize="15sp"
+                android:gravity="left"/>
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_margin="5dp"
+                android:text="Самое частое занятие "
+                android:textStyle="bold"
+                android:textColor="#000000"
+                android:textSize="15sp"
+                android:gravity="left"/>
+            <TextView
+                android:id="@+id/doingtext"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_margin="5dp"
+                android:text=" "
+                android:textStyle="bold"
+                android:textColor="#000000"
+                android:textSize="15sp"
+                android:gravity="left"/>
         </LinearLayout>
     </GridLayout>
 </ScrollView>

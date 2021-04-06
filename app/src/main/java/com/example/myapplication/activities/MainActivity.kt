@@ -53,12 +53,6 @@ class MainActivity : AppCompatActivity() {
 
         maintext.text = dateText
 
-        Toast.makeText(
-            this@MainActivity,
-            currentDateTimeString,
-            Toast.LENGTH_LONG
-        ).show()
-
         val moods = arrayOf(
                 "Сейчас мое настроение...",
                 "Отличное",
