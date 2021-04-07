@@ -14,4 +14,4 @@
 * Добавлена возможность просмотра статистики за месяц, неделю и год;
 * При просмотре статистики график можно масштабировать и прокручивать.
 
-![](https://github.com/moevm/adfmp1h21-mood/blob/main/doc/appisready.gif?raw=true)
+<img src="https://github.com/moevm/adfmp1h21-mood/blob/main/doc/appisready.gif?raw=true" width="250">
