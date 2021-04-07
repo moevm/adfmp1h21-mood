@@ -41,12 +41,20 @@ class MainActivity : AppCompatActivity() {
         if (arguments != null) {
             val dateTime = arguments["currentDateTime"].toString()
             currentDateTime = LocalDate.parse(dateTime)
+        } else {
+            currentDateTime = LocalDateTime.now().toLocalDate()
+        }
+
+        if (currentDateTime.plusDays(2).isBefore(LocalDate.now())) {
             moodspinner.visibility = View.GONE
             statespinner.visibility = View.GONE
             timespinner.visibility = View.GONE
             doingspinner.visibility = View.GONE
         } else {
-            currentDateTime = LocalDateTime.now().toLocalDate()
+            moodspinner.visibility = View.VISIBLE
+            statespinner.visibility = View.VISIBLE
+            timespinner.visibility = View.VISIBLE
+            doingspinner.visibility = View.VISIBLE
         }
         val dateText = currentDateTime.format(DateTimeFormatter.ofLocalizedDate(FormatStyle.LONG))
         val currentDateTimeString = currentDateTime.toString()
